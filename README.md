@@ -21,38 +21,33 @@ Developed by: KARTHEESHWAR D J
 RegisterNumber:  212225040173
 */
 import numpy as np
-from sklearn.datasets import fetch_california_housing
-from sklearn.linear_model import SGDRegressor
-from sklearn.multioutput import MultiOutputRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
-from sklearn.preprocessing import StandardScaler
-data = fetch_california_housing()
-x= data.data[:,:3]
-y=np.column_stack((data.target,data.data[:,6]))
-x_train, x_test, y_train,y_test = train_test_split(x,y, test_size = 0.2, random_state =42)
-scaler_x = StandardScaler()
-scaler_y = StandardScaler()
-scaler_y = StandardScaler()
-x_train = scaler_x.fit_transform(x_train)
-x_test = scaler_x.fit_transform(x_test)
-y_train = scaler_y.fit_transform(y_train)
-y_test = scaler_y.fit_transform(y_test)
-sgd = SGDRegressor(max_iter=1000, tol = 1e-3)
-multi_output_sgd= MultiOutputRegressor(sgd)
-multi_output_sgd.fit(x_train, y_train)
-y_pred =multi_output_sgd.predict(x_test)
-y_pred = scaler_y.inverse_transform(y_pred)
-y_test = scaler_y.inverse_transform(y_test)
-print(y_pred)
-mse = mean_squared_error(y_test,y_pred)
-print("Mean Squared Error:",mse)
-print("\nPredictions:\n",y_pred[:5])
+X = np.array([
+    [2, 80, 50],
+    [3, 60, 40],
+    [5, 90, 70],
+    [7, 85, 80],
+    [9, 95, 90]
+], dtype=float)
+y = np.array([50, 45, 70, 80, 95], dtype=float)
+w = np.zeros(X.shape[1])
+b = 0
+lr = 0.0001
+epochs = 1000
+for epoch in range(epochs):
+    for i in range(len(X)):
+        y_pred = np.dot(X[i], w) + b
+        error = y_pred - y[i]
+        w = w - lr * error * X[i]
+        b = b - lr * error
+print("Weights:", w)
+print("Bias:", b)
+predictions = np.dot(X, w) + b
+print("\nPredictions:")
+print(predictions)
 ```
 
 ## Output:
-<img width="398" height="337" alt="image" src="https://github.com/user-attachments/assets/76e94936-f220-440e-8365-24e3bcdcdee6" />
-
+<img width="612" height="125" alt="image" src="https://github.com/user-attachments/assets/b27b55a0-a1a1-41e0-a555-b3e0a47d781e" />
 
 ## Result:
 Thus the program to implement the multivariate linear regression model for predicting the price of the house and number of occupants in the house with SGD regressor is written and verified using python programming.
